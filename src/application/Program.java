@@ -11,45 +11,39 @@ public class Program {
 
 	public static void main(String[] args) throws ParseException {
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Scanner sc = new Scanner(System.in);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 		System.out.print("Room number: ");
 		int number = sc.nextInt();
-		System.out.print("Check-in date: ");
+		System.out.print("Check-in date (dd/MM/yyyy): ");
 		Date checkIn = sdf.parse(sc.next());
-		System.out.print("Check-out date: ");
+		System.out.print("Check-out date (dd/MM/yyyy): ");
 		Date checkOut = sdf.parse(sc.next());
 
 		if (!checkOut.after(checkIn)) {
 			System.out.println("Error in reservation: Check-out date must be after check-in date");
-
 		} else {
-			Reservation res = new Reservation(number, checkIn, checkOut);
-			System.out.println(res);
+			Reservation reservation = new Reservation(number, checkIn, checkOut);
+			System.out.println(reservation);
 
 			System.out.println();
 			System.out.println("Enter data to update the reservation:");
-			System.out.print("Check-in date: ");
-			Date checkIn2 = sdf.parse(sc.next());
-			System.out.print("Check-out date: ");
-			Date checkOut2 = sdf.parse(sc.next());
+			System.out.print("Check-in date (dd/MM/yyyy): ");
+			checkIn = sdf.parse(sc.next());
+			System.out.print("Check-out date (dd/MM/yyyy): ");
+			checkOut = sdf.parse(sc.next());
 
-			// Date now = new Date();
+			String error = reservation.updateDates(checkIn, checkOut);
 
-			if (checkOut2.before(checkOut) || checkIn2.before(checkIn)) {
-				System.out.println("Error in reservation: Reservation dates for update must be future dates");
-			} else if (!checkOut2.after(checkIn2)) {
-				System.out.println("Error in reservation: Check-out date must be after check-in date");
-
+			if (error != null) {
+				System.out.println("Error in reservation: " + error);
 			} else {
-				res.updateDates(checkIn, checkOut);
-				System.out.println(res);
+				System.out.println(reservation);
 			}
+
 		}
 
 		sc.close();
-
 	}
-
 }
